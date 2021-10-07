@@ -1,0 +1,24 @@
+{
+  "name": "cli-application",
+  "version": "1.0.0",
+  "description": "репозиторий для выполнения ДЗ №1 по Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "start:dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ABoklogov/CLI-application.git"
+  },
+  "author": "Alexey Boklogov <Kashira87@mail.ru>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ABoklogov/CLI-application/issues"
+  },
+  "homepage": "https://github.com/ABoklogov/CLI-application#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  }
+}
