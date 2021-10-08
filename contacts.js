@@ -1,24 +1,28 @@
 const url = require("url");
 const path = require("path");
-const fs = require("fs").promises;
+const fs = require("fs");
 
 const contactsPath = path.resolve("./db/contacts.json");
 
 function listContacts() {
-  fs.readFile(contactsPath)
-    .then((data) => normalizeData(data))
-    .catch((err) => err.message);
+  fs.readFile(contactsPath, (err, data) => {
+    if (err) {
+      console.table(err.message);
+    }
+    console.table(normalizeData(data));
+  });
 }
 
 function getContactById(contactId) {
-  fs.readFile(contactsPath)
-    .then((data) => {
-      const foundContact = normalizeData(data).find(
-        ({ id }) => id === contactId
-      );
-      return foundContact;
-    })
-    .catch((err) => err.message);
+  fs.readFile(contactsPath, (err, data) => {
+    if (err) {
+      console.table(err.message);
+    }
+    const foundContact = normalizeData(data).find(
+      ({ id }) => id === Number(contactId)
+    );
+    console.table(foundContact);
+  });
 }
 
 function removeContact(contactId) {
@@ -33,8 +37,6 @@ function normalizeData(data) {
   const convertTextData = data.toString();
   return JSON.parse(convertTextData);
 }
-// getContactById(2);
-// console.log(listContacts());
 
 module.exports = {
   listContacts,
