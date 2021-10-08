@@ -44,6 +44,7 @@ function removeContact(contactId) {
         return;
       }
       console.log(`контакт c id = ${contactId} успешно удален.`.green);
+      console.table(newContacts);
     });
   });
 }
@@ -51,9 +52,9 @@ function removeContact(contactId) {
 function addContact(name, email, phone) {
   const newContact = {
     id: shortid.generate(),
-    name: name,
-    email: email,
-    phone: phone,
+    name,
+    email,
+    phone,
   };
 
   fs.readFile(contactsPath, (err, data) => {
