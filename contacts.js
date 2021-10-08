@@ -1,36 +1,74 @@
-const url = require("url");
 const path = require("path");
 const fs = require("fs");
+const shortid = require("shortid");
+require("colors");
 
 const contactsPath = path.resolve("./db/contacts.json");
 
 function listContacts() {
   fs.readFile(contactsPath, (err, data) => {
     if (err) {
-      console.table(err.message);
+      `${err.message}`.red;
     }
-    console.table(normalizeData(data));
+    const contacts = normalizeData(data);
+    console.table(contacts);
   });
 }
 
 function getContactById(contactId) {
   fs.readFile(contactsPath, (err, data) => {
     if (err) {
-      console.table(err.message);
+      console.log(`${err.message}`.red);
     }
     const foundContact = normalizeData(data).find(
       ({ id }) => id === Number(contactId)
     );
+
+    if (!foundContact) {
+      console.log(`контакт с id = ${contactId} не найден`.red);
+      return;
+    }
     console.table(foundContact);
   });
 }
 
 function removeContact(contactId) {
-  // ...твой код
+  fs.readFile(contactsPath, (err, data) => {
+    const newContacts = normalizeData(data).filter(
+      ({ id }) => id !== Number(contactId)
+    );
+
+    fs.writeFile(contactsPath, JSON.stringify(newContacts, null, 2), (err) => {
+      if (err) {
+        console.log("ошибка удаления контакта".red);
+        return;
+      }
+      console.log(`контакт c id = ${contactId} успешно удален.`.green);
+    });
+  });
 }
 
 function addContact(name, email, phone) {
-  // ...твой код
+  const newContact = {
+    id: shortid.generate(),
+    name: name,
+    email: email,
+    phone: phone,
+  };
+
+  fs.readFile(contactsPath, (err, data) => {
+    const contacts = normalizeData(data);
+    contacts.push(newContact);
+
+    fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2), (err) => {
+      if (err) {
+        console.log("ошибка добавления контакта".red);
+        return;
+      }
+      console.log(`контакт успешно добавлен`.green);
+      console.table(contacts);
+    });
+  });
 }
 
 function normalizeData(data) {
