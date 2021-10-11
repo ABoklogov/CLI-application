@@ -1,5 +1,5 @@
 const { Command } = require("commander");
-const contactsFunc = require("./contacts");
+const contactsFunc = require("./controllers/contacts");
 require("colors");
 
 const program = new Command();
@@ -14,17 +14,17 @@ program.parse(process.argv);
 
 const argv = program.opts();
 
-function invokeAction({ action, id, name, email, phone }) {
+async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
-      contactsFunc
+      await contactsFunc
         .listContacts()
         .then((contacts) => console.table(contacts))
         .catch((error) => console.log(`${error.message}`.red));
       break;
 
     case "get":
-      contactsFunc
+      await contactsFunc
         .getContactById(id)
         .then((data) => {
           data
@@ -35,7 +35,7 @@ function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "add":
-      contactsFunc
+      await contactsFunc
         .addContact(name, email, phone)
         .then((data) =>
           data
@@ -46,7 +46,7 @@ function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "remove":
-      contactsFunc
+      await contactsFunc
         .removeContact(id)
         .then((data) =>
           data
